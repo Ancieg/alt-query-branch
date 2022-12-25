@@ -6,3 +6,5 @@ ordered_arches = [
     'aarch64',
     'ppc64le'
 ]
+
+sorted_arches = sorted(ordered_arches)
