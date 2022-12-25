@@ -34,3 +34,20 @@ class FoundPackage:
             "source": self._source,
             "binaries": self._binaries
         }
+
+class Result:
+    def __init__(self, asked, type, branch, arches, found):
+        self._asked = asked
+        self._type = type
+        self._branch = branch
+        self._arches = arches
+        self._found = found
+
+    def to_dict(self):
+        return {
+            "asked": self._asked,
+            "type": self._type,
+            # "branch": self._branch,
+            # "arches": self._arches,
+            "found": self._found
+        }
