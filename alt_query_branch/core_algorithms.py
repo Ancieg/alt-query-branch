@@ -28,7 +28,7 @@ def search_binary_packages(match, exact=False, branch='sisyphus', arches=ordered
     full_dump = RDB().branch_binary_packages(branch)
 
     if exact:
-        match = "^{}$".format(re.escape(match))
+        match = ".{{0}}{}.{{0}}".format(re.escape(match))
 
     arches = ",".join(['"{}"'.format(a) for a in arches])
 
