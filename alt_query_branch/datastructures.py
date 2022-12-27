@@ -9,27 +9,20 @@ class FoundPackage:
         if {'arch': arch, 'name': bin} not in self._binaries:
             self._binaries.append({'arch': arch, 'name': bin})
 
-    def _sorted_arches(self):
-        arches = set()
-        for bin in self._binaries:
-            arches.add(bin['arch'])
-        arches = list(arches)
+    def _ordered_arches(self):
+        arches = list({bin['arch'] for bin in self._binaries})
+        return [arch for arch in arches if arch in ORDERED_ARCHES]
 
-        ordered_arches_sub = []
-        for arch in ORDERED_ARCHES:
-            if arch in arches:
-                ordered_arches_sub.append(arch)
-        return ordered_arches_sub
-
-    def _sort_binaries(self):
-        sorted_bin_packages = []
-        for arch in self._sorted_arches():
-            for bin in sorted(filter(lambda x: x['arch'] == arch, self._binaries), key=lambda bin: bin['name']):
-                sorted_bin_packages.append({'arch': arch, 'name': bin['name']})
-        self._binaries = sorted_bin_packages
+    def _order_binaries(self):
+        ordered_binaries = []
+        for arch in self._ordered_arches():
+            one_arch_binaries = filter(lambda x: x['arch'] == arch, self._binaries)
+            ordered_one_arch_binaries = sorted(one_arch_binaries, key=lambda bin: bin['name'])
+            ordered_binaries.extend(ordered_one_arch_binaries)
+        self._binaries = ordered_binaries
 
     def to_dict(self):
-        self._sort_binaries()
+        self._order_binaries()
         return {
             "source": self._source,
             "binaries": self._binaries
