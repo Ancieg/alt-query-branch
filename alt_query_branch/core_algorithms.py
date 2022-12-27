@@ -6,8 +6,8 @@ from .datastructures import BinaryPackage, SourcePackage, Result
 
 from .constants import ALL_ARCHES
 
-def sort_with_order(ans): # 'ans' stands for arch-name-source
-    sorted_packages = sorted(ans, key=lambda d: d['source'])
+def _order_packages(packages: dict):
+    sorted_packages = sorted(packages, key=lambda d: d['source'])
     source_packages_names = list(set(s['source'] for s in sorted_packages))
 
     source_packages: list[SourcePackage] = []
@@ -22,7 +22,7 @@ def sort_with_order(ans): # 'ans' stands for arch-name-source
 
     return source_packages
 
-def search_binary_packages(match, exact=False, branch='sisyphus', arches=ALL_ARCHES):
+def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_ARCHES):
     """
     Using jq is simple and fast way to process large JSON-content.
     """
@@ -39,4 +39,4 @@ def search_binary_packages(match, exact=False, branch='sisyphus', arches=ALL_ARC
 
     plain_result = jq.compile(expr).input(full_dump).all()
  
-    return sort_with_order(plain_result)
+    return _order_packages(plain_result)

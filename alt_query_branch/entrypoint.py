@@ -2,8 +2,7 @@ import json
 import sys
 import argparse
 
-from .core_algorithms import search_binary_packages, sort_with_order
-from .datastructures import Result
+from .core_algorithms import search_matching_packages
 from .constants import ORDERED_ARCHES
 
 def main():
@@ -30,7 +29,7 @@ def main():
         argparser.exit(1)
 
     try:
-        result = search_binary_packages(match, exact, branch, arches)
+        result = search_matching_packages(match, exact, branch, arches)
         result = Result(match, "exact" if exact else "inexact", branch, arches, result).to_dict()
         result = json.dumps(result)
     except Exception as e:
