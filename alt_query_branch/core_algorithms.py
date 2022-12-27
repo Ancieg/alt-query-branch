@@ -28,6 +28,7 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     """
     full_dump = RDBExportBranchBinaryPackages().execute(branch)
 
+    init_match = match
     if exact:
         match = ".{{0}}{}.{{0}}".format(re.escape(match))
 
@@ -40,4 +41,4 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     plain_result = jq.compile(expr).input(full_dump).all()
     ordered_result = _order_packages(plain_result)
 
-    return Result(match, exact, branch, arches, ordered_result).prepare()
+    return Result(init_match, exact, branch, arches, ordered_result).prepare()
