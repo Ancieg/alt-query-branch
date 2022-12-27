@@ -41,18 +41,18 @@ class SourcePackage:
         }
 
 class Result:
-    def __init__(self, asked, type, branch, arches, found):
-        self._asked = asked
-        self._type = type
+    def __init__(self, expression: str, exact: bool, branch: str, arches: list[str], packages: list[SourcePackage]):
+        self._asked = expression
+        self._exactness = "exact" if exact else "inexact"
         self._branch = branch
         self._arches = arches
-        self._found = found
+        self._packages = packages
 
-    def to_dict(self):
+    def prepare(self):
         return {
-            "asked": self._asked,
-            "type": self._type,
-            # "branch": self._branch,
-            # "arches": self._arches,
-            "found": self._found
+            "expression": self._asked,
+            "exactness": self._exactness,
+            "branch": self._branch,
+            "arches": self._arches,
+            "packages": [p.to_dict() for p in self._packages]
         }

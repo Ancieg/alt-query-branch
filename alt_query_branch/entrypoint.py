@@ -30,7 +30,6 @@ def main():
 
     try:
         result = search_matching_packages(match, exact, branch, arches)
-        result = Result(match, "exact" if exact else "inexact", branch, arches, result).to_dict()
         result = json.dumps(result)
     except Exception as e:
         print(e, file=sys.stderr)

@@ -38,5 +38,6 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
 
     plain_result = jq.compile(expr).input(full_dump).all()
- 
-    return _order_packages(plain_result)
+    ordered_result = _order_packages(plain_result)
+
+    return Result(match, exact, branch, arches, ordered_result).prepare()
