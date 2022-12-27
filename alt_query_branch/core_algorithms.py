@@ -1,7 +1,7 @@
 import jq
 import re
 
-from .rdb import RDB
+from .rdb import RDBExportBranchBinaryPackages
 from .datastructures import FoundPackage
 
 from . import ordered_arches
@@ -25,7 +25,7 @@ def search_binary_packages(match, exact=False, branch='sisyphus', arches=ordered
     """
     Using jq is simple and fast way to process large JSON-content.
     """
-    full_dump = RDB().branch_binary_packages(branch)
+    full_dump = RDBExportBranchBinaryPackages().execute(branch)
 
     if exact:
         match = ".{{0}}{}.{{0}}".format(re.escape(match))
