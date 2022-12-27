@@ -2,24 +2,25 @@ import jq
 import re
 
 from .rdb import RDBExportBranchBinaryPackages
-from .datastructures import FoundPackage
+from .datastructures import BinaryPackage, SourcePackage, Result
 
 from .constants import ALL_ARCHES
 
 def sort_with_order(ans): # 'ans' stands for arch-name-source
-    sorted_result_list = sorted(ans, key=lambda d: d['source'])
-    sources = sorted(list(set(s['source'] for s in sorted_result_list)))
+    sorted_packages = sorted(ans, key=lambda d: d['source'])
+    source_packages_names = list(set(s['source'] for s in sorted_packages))
 
-    result_set = []
+    source_packages: list[SourcePackage] = []
 
-    for source in sources:
-        binaries = list(filter(lambda s: s['source'] == source, sorted_result_list))
-        res = FoundPackage(source)
+    for source_package_name in sorted(source_packages_names):
+        binaries = filter(lambda s: s['source'] == source_package_name, sorted_packages)
+        source_package = SourcePackage(source_package_name)
         for binary in binaries:
-            res.add_bin(binary['arch'], binary['name'])
-        result_set.append(res.to_dict())
+            del binary['source']
+            source_package.add_bin(BinaryPackage(**binary))
+        source_packages.append(source_package)
 
-    return result_set
+    return source_packages
 
 def search_binary_packages(match, exact=False, branch='sisyphus', arches=ALL_ARCHES):
     """
@@ -32,7 +33,7 @@ def search_binary_packages(match, exact=False, branch='sisyphus', arches=ALL_ARC
 
     arches_string = ",".join(['"{}"'.format(a) for a in arches])
 
-    expr = '.packages[] | select(.source != "") | {source,arch,name}'
+    expr = '.packages[] | select(.source != "")'
     expr += ' | select(.arch | IN({}))'.format(arches_string)
     expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
 
