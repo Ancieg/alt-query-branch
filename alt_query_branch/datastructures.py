@@ -1,4 +1,4 @@
-from . import ordered_arches
+from .constants import ORDERED_ARCHES
 
 class FoundPackage:
     def __init__(self, source):
@@ -16,7 +16,7 @@ class FoundPackage:
         arches = list(arches)
 
         ordered_arches_sub = []
-        for arch in ordered_arches:
+        for arch in ORDERED_ARCHES:
             if arch in arches:
                 ordered_arches_sub.append(arch)
         return ordered_arches_sub

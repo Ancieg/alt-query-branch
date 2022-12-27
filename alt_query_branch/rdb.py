@@ -1,9 +1,8 @@
 from . import CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
+from .constants import ALLOWED_BRANCHES, REQUEST_ROUTE
+
 import requests
 import requests_cache
-
-ALLOWED_BRANCHES = ['sisyphus', 'p10', 'p9']
-REQUEST_ROUTE = 'https://rdb.altlinux.org/api/export/branch_binary_packages/{}'
 
 
 class RDBNoSuchBranchError(RuntimeError):
