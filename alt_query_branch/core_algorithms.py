@@ -38,4 +38,4 @@ def search_binary_packages(match, exact=False, branch='sisyphus', arches=ordered
 
     plain_result = jq.compile(expr).input(full_dump).all()
  
-    return plain_result
+    return sort_with_order(plain_result)

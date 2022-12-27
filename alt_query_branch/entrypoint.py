@@ -20,7 +20,6 @@ def main():
 
     try:
         result = search_binary_packages(match, exact, branch, arches)
-        result = sort_with_order(result)
         result = Result(match, "exact" if exact else "inexact", branch, arches, result).to_dict()
         result = json.dumps(result)
     except Exception as e:
