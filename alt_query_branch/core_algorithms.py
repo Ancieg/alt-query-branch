@@ -30,10 +30,10 @@ def search_binary_packages(match, exact=False, branch='sisyphus', arches=ALL_ARC
     if exact:
         match = ".{{0}}{}.{{0}}".format(re.escape(match))
 
-    arches = ",".join(['"{}"'.format(a) for a in arches])
+    arches_string = ",".join(['"{}"'.format(a) for a in arches])
 
     expr = '.packages[] | select(.source != "") | {source,arch,name}'
-    expr += ' | select(.arch | IN({}))'.format(arches)
+    expr += ' | select(.arch | IN({}))'.format(arches_string)
     expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
 
     plain_result = jq.compile(expr).input(full_dump).all()
