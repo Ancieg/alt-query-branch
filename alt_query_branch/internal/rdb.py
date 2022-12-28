@@ -1,4 +1,4 @@
-from . import CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
+from .. import CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
 from .constants import ALLOWED_BRANCHES, REQUEST_ROUTE
 
 import requests
