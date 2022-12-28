@@ -23,7 +23,11 @@ class SourcePackage:
 
     def _ordered_arches(self):
         arches = list({bin.arch for bin in self._binaries})
-        return [arch for arch in arches if arch in ORDERED_ARCHES]
+        ordered_arches = []
+        for arch in ORDERED_ARCHES:
+            if arch in arches:
+                ordered_arches.append(arch)
+        return ordered_arches
 
     def _order_binaries(self):
         ordered_binaries = []
