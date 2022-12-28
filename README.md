@@ -45,20 +45,35 @@ options:
   -o FILE, --file FILE
 ```
 
+# Usage as a module
+Example:
+```python
+import alt_query_branch
+alt_query_branch.search_matching_packages('python3-modules', exact=False, branch='p10', arches=['noarch', 'armh'])
+```
+
 # Output JSON schema
 
 ```json
 {
-    "asked": "<your request>",
-    "type": "< exact/inexact >",
-    "found": [
+    "expression": "<your request>",
+    "exactness": "< exact/inexact >",
+    "branch": "< sisyphus/p10/p9 >",
+    "arches": "< comma-separated list of queried architectures >",
+    "packages": [
     	{
 	    "source": "<source package name>",
 	    "binaries": [
-	        { "arch": "<arch>", "name": "<bin name>" },
-		{ "arch": "<arch>", "name": "<bin name>" },
+              {
+                "name": "<bin name>",
+                "epoch": <epoch>,
+                "version": "<version>",
+                "release": "<release>",
+                "arch": "<architecture>",
+                "disttag": "<disttag>",
+                "buildtime": <build time>
+              },
 		    ...
-		{ "arch": "<arch>", "name": "<bin name>" }
 	    ]
 	},
         ...
