@@ -7,6 +7,9 @@ from .datastructures import BinaryPackage, SourcePackage, Result
 from .constants import ALL_ARCHES
 
 def _order_packages(packages: dict):
+    def without_keys(d, keys):
+        return {x: d[x] for x in d if x not in keys}
+
     sorted_packages = sorted(packages, key=lambda d: d['source'])
     source_packages_names = list(set(s['source'] for s in sorted_packages))
 
@@ -16,8 +19,7 @@ def _order_packages(packages: dict):
         binaries = filter(lambda s: s['source'] == source_package_name, sorted_packages)
         source_package = SourcePackage(source_package_name)
         for binary in binaries:
-            del binary['source']
-            source_package.add_bin(BinaryPackage(**binary))
+            source_package.add_bin(BinaryPackage(**without_keys(binary, 'source')))
         source_packages.append(source_package)
 
     return source_packages
