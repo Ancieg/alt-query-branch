@@ -13,9 +13,7 @@ class RDBExportBranchBinaryPackages:
         if not CACHE_ENABLED:
             self._session = requests.Session()
         else:
-            self._session = requests_cache.CachedSession(
-                **({ 'cache_name': CACHE_PATH, 'expire_after': CACHE_LIFETIME } if CACHE_ENABLED else {})
-            )
+            self._session = requests_cache.CachedSession(cache_name=CACHE_PATH, expire_after=CACHE_LIFETIME)
 
     def _request_api(self, request):
         return self._session.get(request, headers={'Accept': 'application/json'}).json()
