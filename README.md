@@ -81,7 +81,7 @@ alt_query_branch.search_matching_packages('python3-modules', exact=False, branch
 }
 ```
 
-# Architetures order
+# Architeсtures order
 
 * `noarch`
 * `x86_64`
