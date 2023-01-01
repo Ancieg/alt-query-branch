@@ -1,4 +1,4 @@
-from .internal.core_algorithms import search_matching_packages
+from ._internal.core_algorithms import search_matching_packages
 
 
 def cache_enabled(enable = None):
