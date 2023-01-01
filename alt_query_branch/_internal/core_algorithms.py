@@ -30,21 +30,20 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     """
     full_dump = RDBExportBranchBinaryPackages().execute(branch)
 
-    init_match = match
-    if exact:
-        match = ".{{0}}{}.{{0}}".format(re.escape(match))
-
     arches_string = ",".join(['"{}"'.format(a) for a in arches])
 
     expr = '.packages[] | select(.source != "")'
     expr += ' | select(.arch | IN({}))'.format(arches_string)
-    expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
+    if not exact:
+        expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
+    else:
+        expr += ' | select(.source == "{}" or .name == "{}")'.format(match, match)
 
     plain_result = jq.compile(expr).input(full_dump).all()
     ordered_result = _order_packages(plain_result)
 
     return {
-            "expression": init_match,
+            "expression": match,
             "exactness": "exact" if exact else "inexact",
             "branch": branch,
             "arches": arches,
