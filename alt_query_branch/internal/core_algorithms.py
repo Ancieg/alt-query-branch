@@ -2,7 +2,7 @@ import jq
 import re
 
 from .rdb import RDBExportBranchBinaryPackages
-from .datastructures import BinaryPackage, SourcePackage, Result
+from .datastructures import BinaryPackage, SourcePackage
 
 from .constants import ALL_ARCHES
 
@@ -43,4 +43,10 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     plain_result = jq.compile(expr).input(full_dump).all()
     ordered_result = _order_packages(plain_result)
 
-    return Result(init_match, exact, branch, arches, ordered_result).prepare()
+    return {
+            "expression": init_match,
+            "exactness": "exact" if exact else "inexact",
+            "branch": branch,
+            "arches": arches,
+            "packages": [p.to_dict() for p in ordered_result]
+        }

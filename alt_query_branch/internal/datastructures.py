@@ -40,19 +40,3 @@ class SourcePackage:
             "binaries": [asdict(b) for b in self._binaries]
         }
 
-class Result:
-    def __init__(self, expression: str, exact: bool, branch: str, arches: list[str], packages: list[SourcePackage]):
-        self._asked = expression
-        self._exactness = "exact" if exact else "inexact"
-        self._branch = branch
-        self._arches = arches
-        self._packages = packages
-
-    def prepare(self):
-        return {
-            "expression": self._asked,
-            "exactness": self._exactness,
-            "branch": self._branch,
-            "arches": self._arches,
-            "packages": [p.to_dict() for p in self._packages]
-        }
