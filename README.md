@@ -51,7 +51,17 @@ Example:
 import alt_query_branch
 alt_query_branch.search_matching_packages('python3-modules', exact=False, branch='p10', arches=['noarch', 'armh'])
 ```
+Also you can manage caching:
+```python
+alt_query_branch.cache_enabled()    # check if caching is used
+alt_query_branch.cache_enabled(v)   # where v ∈ {True, False}; enable/disable caching
 
+alt_query_branch.cache_lifetime()   # get cache lifetime (in seconds)
+alt_query_branch.cache_lifetime(v)  # where v ∈ Z; set cache lifetime
+_
+alt_query_branch.cache_path()       # get cache path ()
+alt_query_branch.cache_path(v)      # where v is string; set cache path (file)
+```
 # Output JSON schema
 
 ```json

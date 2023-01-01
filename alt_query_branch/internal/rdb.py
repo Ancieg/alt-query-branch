@@ -1,5 +1,7 @@
-from .. import CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
-from .constants import ALLOWED_BRANCHES, REQUEST_ROUTE
+from .constants import (
+    ALLOWED_BRANCHES, REQUEST_ROUTE, CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
+)
+
 
 import requests
 import requests_cache
