@@ -2,8 +2,8 @@ import json
 import sys
 import argparse
 
-from .core_algorithms import search_matching_packages
-from .constants import ORDERED_ARCHES
+from alt_query_branch._internal.core_algorithms import search_matching_packages
+from alt_query_branch._internal.constants import ORDERED_ARCHES
 
 def main():
     argparser = argparse.ArgumentParser()

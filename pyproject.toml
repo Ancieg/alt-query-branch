@@ -32,4 +32,4 @@ authors = [
 ]
 
 [project.scripts]
-alt-query-branch = "alt_query_branch._internal.entrypoint:main"
+alt-query-branch = "cli:main"
