@@ -1,5 +1,3 @@
-import re
-
 import jq
 
 from .constants import ALL_ARCHES
