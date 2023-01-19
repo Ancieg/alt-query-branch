@@ -1,5 +1,5 @@
 from .core_algorithms import search_matching_packages
-
+from .constants import CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
 
 def cache_enabled(enable = None):
     """
