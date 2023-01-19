@@ -5,9 +5,6 @@ from .constants import (ALLOWED_BRANCHES, CACHE_ENABLED, CACHE_LIFETIME,
                         CACHE_PATH, REQUEST_ROUTE)
 
 
-class RDBNoSuchBranchError(RuntimeError):
-    pass
-
 class RDBExportBranchBinaryPackages:
     def __init__(self) -> None:
         if not CACHE_ENABLED:
@@ -20,5 +17,5 @@ class RDBExportBranchBinaryPackages:
 
     def execute(self, branch='sisyphus'):
         if branch not in ALLOWED_BRANCHES:
-            raise RDBNoSuchBranchError('Branch {} is not available'.format(branch))
+            raise ValueError('Branch {} is not available'.format(branch))
         return self._request_api(REQUEST_ROUTE.format(branch))
