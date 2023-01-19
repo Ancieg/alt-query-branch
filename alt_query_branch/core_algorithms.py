@@ -1,10 +1,11 @@
-import jq
 import re
 
-from .rdb import RDBExportBranchBinaryPackages
-from .datastructures import BinaryPackage, SourcePackage
+import jq
 
 from .constants import ALL_ARCHES
+from .datastructures import BinaryPackage, SourcePackage
+from .rdb import RDBExportBranchBinaryPackages
+
 
 def _order_packages(packages: dict):
     def without_keys(d, keys):

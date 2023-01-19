@@ -1,6 +1,7 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 from .constants import ORDERED_ARCHES
+
 
 @dataclass(frozen=True, eq=True)
 class BinaryPackage:

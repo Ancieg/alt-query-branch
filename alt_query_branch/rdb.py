@@ -1,10 +1,8 @@
-from .constants import (
-    ALLOWED_BRANCHES, REQUEST_ROUTE, CACHE_ENABLED, CACHE_LIFETIME, CACHE_PATH
-)
-
-
 import requests
 import requests_cache
+
+from .constants import (ALLOWED_BRANCHES, CACHE_ENABLED, CACHE_LIFETIME,
+                        CACHE_PATH, REQUEST_ROUTE)
 
 
 class RDBNoSuchBranchError(RuntimeError):
