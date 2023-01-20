@@ -1,8 +1,9 @@
 import jq
 
+import alt_query_branch.rdb as rdb
+
 from .constants import ALL_ARCHES
 from .datastructures import BinaryPackage, SourcePackage
-from .rdb import RDBExportBranchBinaryPackages
 
 
 def _order_packages(packages: dict):
@@ -27,7 +28,7 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     """
     Using jq is simple and fast way to process large JSON-content.
     """
-    full_dump = RDBExportBranchBinaryPackages().execute(branch)
+    full_dump = rdb.branch_binary_packages(branch)
 
     arches_string = ",".join(['"{}"'.format(a) for a in arches])
 
