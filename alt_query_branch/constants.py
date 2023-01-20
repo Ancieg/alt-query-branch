@@ -17,7 +17,9 @@ ORDERED_ARCHES = [
     'ppc64le'
 ]
 
-CACHE_ENABLED = True
-CACHE_LIFETIME = 900
-CACHE_BACKEND = 'sqlite'
-CACHE_PATH = '~/.cache/alt-query-branch'
+CACHING = {
+    'enabled': True,
+    'lifetime': 900,
+    'backend': 'sqlite',
+    'path': '~/.cache/alt-query-branch'
+}
