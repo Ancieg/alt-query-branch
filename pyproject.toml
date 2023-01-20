@@ -30,6 +30,3 @@ authors = [
     { name = "Anton Farygin", email = "rider@altlinux.org" },
     { name = "Anton Zhukharev", email = "ancieg@altlinux.org" }
 ]
-
-[project.scripts]
-alt-query-branch = "cli:main"
