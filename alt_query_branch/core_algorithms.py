@@ -42,10 +42,4 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_A
     plain_result = jq.compile(expr).input(full_dump).all()
     ordered_result = _order_packages(plain_result)
 
-    return {
-            "expression": match,
-            "exactness": "exact" if exact else "inexact",
-            "branch": branch,
-            "arches": arches,
-            "packages": [p.to_dict() for p in ordered_result]
-        }
+    return [p.to_dict() for p in ordered_result]
