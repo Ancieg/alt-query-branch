@@ -8,6 +8,10 @@ from alt_query_branch.constants import ORDERED_ARCHES
 from alt_query_branch.core_algorithms import search_matching_packages
 
 
+def perror(*args, **kwargs):
+    print(*args, **kwargs, file=sys.stderr)
+
+
 def main():
     argparser = argparse.ArgumentParser()
     argparser.add_argument('-b', '--branch', type=str, default='sisyphus')
@@ -28,7 +32,7 @@ def main():
 
     if not stdout and not file:
         argparser.print_usage(file=sys.stderr)
-        print("you should provide '-o/--file FILE' or '-s/--stdout' or both", file=sys.stderr)
+        perror("you should provide '-o/--file FILE' or '-s/--stdout' or both")
         argparser.exit(1)
 
     try:
@@ -43,7 +47,7 @@ def main():
             }
         )
     except Exception as e:
-        print(e, file=sys.stderr)
+        perror(e)
         sys.exit(2)
 
     if stdout:
