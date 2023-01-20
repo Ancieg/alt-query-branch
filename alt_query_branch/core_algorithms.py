@@ -2,7 +2,7 @@ import jq
 
 import alt_query_branch.rdb as rdb
 
-from .constants import ALL_ARCHES
+from .constants import ORDERED_ARCHES
 from .datastructures import BinaryPackage, SourcePackage
 
 
@@ -24,7 +24,7 @@ def _order_packages(packages: dict):
 
     return source_packages
 
-def search_matching_packages(match, exact=False, branch='sisyphus', arches=ALL_ARCHES):
+def search_matching_packages(match, exact=False, branch='sisyphus', arches=ORDERED_ARCHES):
     """
     Using jq is simple and fast way to process large JSON-content.
     """
