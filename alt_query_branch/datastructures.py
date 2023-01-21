@@ -1,17 +1,20 @@
-from dataclasses import asdict, dataclass
+from collections import namedtuple
 
 from .constants import ORDERED_ARCHES
 
+BinaryPackage = namedtuple(
+    'BinaryPackage',
+    [
+        'name',
+        'epoch',
+        'version',
+        'release',
+        'arch',
+        'disttag',
+        'buildtime'
+    ]
+)
 
-@dataclass(frozen=True, eq=True)
-class BinaryPackage:
-    name: str
-    epoch: int
-    version: str
-    release: str
-    arch: str
-    disttag: str
-    buildtime: int
 
 class SourcePackage:
     def __init__(self, source: str):
@@ -36,5 +39,5 @@ class SourcePackage:
     def to_dict(self):
         return {
             "source": self._source,
-            "binaries": [asdict(b) for b in self._ordered_binaries()]
+            "binaries": [b._asdict() for b in self._ordered_binaries()]
         }
