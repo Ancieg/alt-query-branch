@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "jq>=1.4.0",
+    "jq>=0.1.6",
     "requests-cache>=0.4.13"
 ]
 authors = [

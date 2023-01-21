@@ -39,7 +39,7 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches=ORDER
     else:
         expr += ' | select(.source == "{}" or .name == "{}")'.format(match, match)
 
-    plain_result = jq.compile(expr).input(full_dump).all()
+    plain_result = jq.jq(expr).transform(full_dump, multiple_output=True)
     ordered_result = _order_packages(plain_result)
 
     return [p.to_dict() for p in ordered_result]
