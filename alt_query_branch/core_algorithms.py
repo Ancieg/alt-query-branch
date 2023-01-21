@@ -6,6 +6,16 @@ from .constants import ORDERED_ARCHES
 from .datastructures import BinaryPackage, SourcePackage
 
 
+def branch_binary_packages_list(branch='sisyphus'):
+    structured_response = rdb.branch_binary_packages(branch)
+    return structured_response['packages']
+
+
+def branch_binary_packages_list_with_source_package_only(branch='sisyphus'):
+    packages = branch_binary_packages_list(branch)
+    return [package for package in packages if package['source'] != '']
+
+
 def _order_packages(packages: dict):
     def without_keys(d, keys):
         return {x: d[x] for x in d if x not in keys}
@@ -28,20 +38,19 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'
     """
     Using jq is simple and fast way to process large JSON-content.
     """
-    full_dump = rdb.branch_binary_packages(branch)
+    packages = branch_binary_packages_list_with_source_package_only(branch)
 
     if arches == 'all':
         arches = ORDERED_ARCHES
     arches = ",".join(['"{}"'.format(a) for a in arches])
 
-    expr = '.packages[] | select(.source != "")'
-    expr += ' | select(.arch | IN({}))'.format(arches)
+    expr = '.[] | select(.arch | IN({}))'.format(arches)
     if not exact:
         expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
     else:
         expr += ' | select(.source == "{}" or .name == "{}")'.format(match, match)
 
-    plain_result = jq.jq(expr).transform(full_dump, multiple_output=True)
+    plain_result = jq.jq(expr).transform(packages, multiple_output=True)
     ordered_result = _order_packages(plain_result)
 
     return [p.to_dict() for p in ordered_result]
