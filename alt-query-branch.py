@@ -4,7 +4,6 @@ import argparse
 import json
 import sys
 
-from alt_query_branch.constants import ORDERED_ARCHES
 from alt_query_branch.core_algorithms import search_matching_packages
 
 
@@ -15,7 +14,7 @@ def perror(*args, **kwargs):
 def main():
     argparser = argparse.ArgumentParser()
     argparser.add_argument('-b', '--branch', type=str, default='sisyphus')
-    argparser.add_argument('-a', '--arches', type=str, default=','.join(ORDERED_ARCHES))
+    argparser.add_argument('-a', '--arches', type=str, default='all')
     argparser.add_argument('-e', '--exact', action='store_true')
     argparser.add_argument('-s', '--stdout', action='store_true')
     argparser.add_argument('-o', '--file', type=str)
@@ -26,7 +25,7 @@ def main():
     match  = args['expression']
     exact  = args['exact']
     branch = args['branch']
-    arches = args['arches'].split(',')
+    arches = 'all' if args['arches'] == 'all' else args['arches'].split(',')
     file   = args['file']
     stdout = args['stdout']
 

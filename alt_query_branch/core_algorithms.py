@@ -24,16 +24,18 @@ def _order_packages(packages: dict):
 
     return source_packages
 
-def search_matching_packages(match, exact=False, branch='sisyphus', arches=ORDERED_ARCHES):
+def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'):
     """
     Using jq is simple and fast way to process large JSON-content.
     """
     full_dump = rdb.branch_binary_packages(branch)
 
-    arches_string = ",".join(['"{}"'.format(a) for a in arches])
+    if arches == 'all':
+        arches = ORDERED_ARCHES
+    arches = ",".join(['"{}"'.format(a) for a in arches])
 
     expr = '.packages[] | select(.source != "")'
-    expr += ' | select(.arch | IN({}))'.format(arches_string)
+    expr += ' | select(.arch | IN({}))'.format(arches)
     if not exact:
         expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
     else:
