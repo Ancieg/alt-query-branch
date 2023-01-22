@@ -26,4 +26,18 @@ def branch_binary_packages(branch: str):
     return _restapi_request(REQUEST_ROUTE.format(branch))
 
 
-__all__ = ["branch_binary_packages"]
+def branch_binary_packages_list(branch='sisyphus'):
+    structured_response = branch_binary_packages(branch)
+    return structured_response['packages']
+
+
+def branch_binary_packages_list_with_source_package_only(branch='sisyphus'):
+    packages = branch_binary_packages_list(branch)
+    return [package for package in packages if package['source'] != '']
+
+
+__all__ = [
+    "branch_binary_packages",
+    "branch_binary_packages_list",
+    "branch_binary_packages_list_with_source_package_only"
+]

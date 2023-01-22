@@ -6,16 +6,6 @@ from .constants import ORDERED_ARCHES
 from .datastructures import BinaryPackage, SourcePackage
 
 
-def branch_binary_packages_list(branch='sisyphus'):
-    structured_response = rdb.branch_binary_packages(branch)
-    return structured_response['packages']
-
-
-def branch_binary_packages_list_with_source_package_only(branch='sisyphus'):
-    packages = branch_binary_packages_list(branch)
-    return [package for package in packages if package['source'] != '']
-
-
 def _order_packages(packages: dict):
     def without_keys(d, keys):
         return {x: d[x] for x in d if x not in keys}
@@ -38,7 +28,7 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'
     """
     Using jq is simple and fast way to process large JSON-content.
     """
-    packages = branch_binary_packages_list_with_source_package_only(branch)
+    packages = rdb.branch_binary_packages_list_with_source_package_only(branch)
 
     if arches == 'all':
         arches = ORDERED_ARCHES
