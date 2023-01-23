@@ -1,6 +1,4 @@
-RDB_URL = 'https://rdb.altlinux.org/api'
-EXPORT_BRANCH_BINARY_PACKAGES = '/export/branch_binary_packages/'
-REQUEST_ROUTE = RDB_URL + EXPORT_BRANCH_BINARY_PACKAGES
+REQUEST_ROUTE = 'https://rdb.altlinux.org/api/export/branch_binary_packages'
 
 ALLOWED_BRANCHES = [
     'sisyphus',
