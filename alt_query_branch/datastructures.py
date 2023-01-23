@@ -32,7 +32,9 @@ class SourcePackage:
         ordered_binaries = []
         for arch in self._ordered_arches():
             one_arch_binaries = filter(lambda x: x.arch == arch, self._binaries)
-            ordered_one_arch_binaries = sorted(one_arch_binaries, key=lambda bin: bin.name)
+            ordered_one_arch_binaries = sorted(
+                one_arch_binaries, key=lambda bin: bin.name
+            )
             ordered_binaries.extend(ordered_one_arch_binaries)
         return ordered_binaries
 
