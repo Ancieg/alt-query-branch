@@ -22,8 +22,8 @@ def _restapi_request(request: str):
 
 def _branch_binary_packages_response(branch: str):
     if branch not in ALLOWED_BRANCHES:
-        raise ValueError("Branch {} is not available".format(branch))
-    return _restapi_request(REQUEST_ROUTE.format(branch))
+        raise ValueError(f"Branch {branch} is not available")
+    return _restapi_request(f"{REQUEST_ROUTE}/{branch}")
 
 
 def branch_binary_packages(branch='sisyphus'):

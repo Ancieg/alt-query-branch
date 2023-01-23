@@ -31,12 +31,12 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'
 
     if arches == 'all':
         arches = ORDERED_ARCHES
-    arches = ",".join(['"{}"'.format(a) for a in arches])
+    arches = ",".join([f'"{a}"' for a in arches])
 
-    expr = '.[] | select(.arch | IN({}))'.format(arches)
+    expr = f'.[] | select(.arch | IN({arches}))'
     if not exact:
-        expr += ' | select("\(.source) \(.name)" | match("{}"))'.format(match)
+        expr += f' | select("\(.source) \(.name)" | match("{match}"))'
     else:
-        expr += ' | select(.source == "{}" or .name == "{}")'.format(match, match)
+        expr += f' | select(.source == "{match}" or .name == "{match}")'
 
     return order_packages(jq(expr).transform(packages, multiple_output=True))
