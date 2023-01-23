@@ -4,7 +4,8 @@ import argparse
 import json
 import sys
 
-from alt_query_branch.algorithms import search_matching_packages
+from alt_query_branch.algorithms import search_matching_packages, order_packages
+from alt_query_branch.rdb import branch_binary_packages_with_source_package
 
 
 def perror(*args, **kwargs):
@@ -35,14 +36,15 @@ def main():
         argparser.exit(1)
 
     try:
-        result = search_matching_packages(match, exact, branch, arches)
+        packages = branch_binary_packages_with_source_package(branch)
+        matching_packages = search_matching_packages(packages, match, exact, arches)
         result = json.dumps(
             {
                 "expression": match,
                 "exactness": "exact" if exact else "inexact",
                 "branch": branch,
                 "arches": arches,
-                "packages": result
+                "packages": order_packages(matching_packages)
             }
         )
     except Exception as e:

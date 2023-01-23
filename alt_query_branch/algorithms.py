@@ -1,8 +1,6 @@
-from typing import Any
+from typing import Any, Union
 
 from jq import jq
-
-import alt_query_branch.rdb as rdb
 
 from .constants import ORDERED_ARCHES
 from .datastructures import BinaryPackage, SourcePackage
@@ -23,11 +21,15 @@ def order_packages(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [v.to_dict() for k, v in sorted(sources.items())]
 
 
-def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'):
+def search_matching_packages(
+            packages: list[dict[str, Any]],
+            match: str,
+            exact: bool = False,
+            arches: Union[str, list[str]] = 'all'
+        ) -> list[dict[str, Any]]:
     """
     Using jq is simple and fast way to process large JSON-content.
     """
-    packages = rdb.branch_binary_packages_with_source_package(branch)
 
     if arches == 'all':
         arches = ORDERED_ARCHES
@@ -39,4 +41,4 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'
     else:
         expr += f' | select(.source == "{match}" or .name == "{match}")'
 
-    return order_packages(jq(expr).transform(packages, multiple_output=True))
+    return jq(expr).transform(packages, multiple_output=True)
