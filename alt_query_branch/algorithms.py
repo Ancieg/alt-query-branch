@@ -7,6 +7,9 @@ from .datastructures import BinaryPackage, SourcePackage
 
 
 def order_packages(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """
+    Groups 'packages' by sorted 'source' fields and orders 'arch'.
+    """
     def without_keys(d, keys):
         return {x: d[x] for x in d if x not in keys}
 
