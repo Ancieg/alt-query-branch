@@ -37,7 +37,7 @@ def search_matching_packages(
 
     expr = f'.[] | select(.arch | IN({arches}))'
     if not exact:
-        expr += f' | select("\(.source) \(.name)" | match("{match}"))'
+        expr += f' | select("\\(.source) \\(.name)" | match("{match}"))'
     else:
         expr += f' | select(.source == "{match}" or .name == "{match}")'
 
