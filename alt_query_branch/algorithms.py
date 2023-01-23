@@ -1,6 +1,6 @@
 from typing import Any
 
-import jq
+from jq import jq
 
 import alt_query_branch.rdb as rdb
 
@@ -39,6 +39,4 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'
     else:
         expr += ' | select(.source == "{}" or .name == "{}")'.format(match, match)
 
-    plain_result = jq.jq(expr).transform(packages, multiple_output=True)
-
-    return order_packages(plain_result)
+    return order_packages(jq(expr).transform(packages, multiple_output=True))
