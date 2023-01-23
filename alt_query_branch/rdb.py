@@ -39,9 +39,3 @@ def branch_binary_packages_with_source_package(branch='sisyphus'):
     """
     packages = branch_binary_packages(branch)
     return [package for package in packages if package['source'] != '']
-
-
-__all__ = [
-    "branch_binary_packages",
-    "branch_binary_packages_with_source_package"
-]
