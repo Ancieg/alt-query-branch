@@ -1,4 +1,4 @@
-from .core_algorithms import search_matching_packages
+from .algorithms import search_matching_packages
 from .constants import CACHING  # noqa: F401
 
 

@@ -4,7 +4,7 @@ import argparse
 import json
 import sys
 
-from alt_query_branch.core_algorithms import search_matching_packages
+from alt_query_branch.algorithms import search_matching_packages
 
 
 def perror(*args, **kwargs):
