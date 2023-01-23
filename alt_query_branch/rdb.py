@@ -1,5 +1,5 @@
-import requests
-import requests_cache
+from requests import Session
+from requests_cache import CachedSession
 
 from .constants import (
     ALLOWED_BRANCHES,
@@ -10,13 +10,13 @@ from .constants import (
 
 def _restapi_request(request: str):
     if CACHING['enabled']:
-        session = requests_cache.CachedSession(
+        session = CachedSession(
             cache_name=CACHING['path'],
             backend=CACHING['backend'],
             expire_after=CACHING['lifetime'],
         )
     else:
-        session = requests.Session()
+        session = Session()
     return session.get(request, headers={"Accept": "application/json"}).json()
 
 
