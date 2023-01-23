@@ -18,13 +18,17 @@ Main features:
 * architectures filtration (just a comma-separated list of architectures to `-a/--arches` option);
 * you can write results to `STDOUT` and file both (`tee` says it is useless feature);
 
-# Installation
+# Requirements
+
+You need to install the following Python modules into your P10-based system:
+
+* `python3-module-jq`
+* `python3-module-requests-cache`
+
+# Installation (optional)
 
 ```bash
 $ git clone https://github.com/Ancieg/alt-query-branch && cd alt-query-branch
-$ python3 -m venv .venv
-$ source .venv/bin/activate
-$ pip install -U pip setuptools
 $ pip install .
 ```
 
@@ -45,49 +49,57 @@ options:
   -o FILE, --file FILE
 ```
 
+**Also you can use `alt-query-branch.py` script without package installation.**
+
 # Usage as a module
-Example:
+Example (like inside `alt-query-branch.py` script):
 ```python
-import alt_query_branch
-alt_query_branch.search_matching_packages('python3-modules', exact=False, branch='p10', arches=['noarch', 'armh'])
+from alt_query_branch.algorithms import search_matching_packages, order_packages
+from alt_query_branch.rdb import branch_binary_packages_with_source_package
+
+# Fetch all of the branch binary packages.
+branch_packages = branch_binary_packages_with_source_package('p10')
+
+# Find matching packages: search inexact 'fuzz' in arches 'noarch' and 'armh'.
+packages = search_matching_packages(branch_packages, 'fuzz', arches=['noarch', 'armh'])
+
+# Group by sources packages and sort (sources and arches).
+ordered_packages = order_packages(packages)
 ```
 Also you can manage caching:
 ```python
-alt_query_branch.cache_enabled()    # check if caching is used
-alt_query_branch.cache_enabled(v)   # where v ∈ {True, False}; enable/disable caching
+# Enable caching with arguments.
+alt_query_branch.enable_caching(
+    path='~/.cache/alt-query-branch', backend='sqlite', lifetime=300)
+)
 
-alt_query_branch.cache_lifetime()   # get cache lifetime (in seconds)
-alt_query_branch.cache_lifetime(v)  # where v ∈ Z; set cache lifetime
-_
-alt_query_branch.cache_path()       # get cache path ()
-alt_query_branch.cache_path(v)      # where v is string; set cache path (file)
+# Disable caching.
+alt_query_branch.disable_caching()
 ```
 # Output JSON schema
 
 ```json
 {
-    "expression": "<your request>",
-    "exactness": "< exact/inexact >",
-    "branch": "< sisyphus/p10/p9 >",
-    "arches": "< comma-separated list of queried architectures >",
-    "packages": [
-    	{
-	    "source": "<source package name>",
-	    "binaries": [
-              {
-                "name": "<bin name>",
-                "epoch": <epoch>,
-                "version": "<version>",
-                "release": "<release>",
-                "arch": "<architecture>",
-                "disttag": "<disttag>",
-                "buildtime": <build time>
-              },
-		    ...
-	    ]
-	},
-        ...
-    ]
+  "expression": "string",                    # your expression
+  "exactness": "string",                     # 'exact'/'inexact'
+  "branch": "string",                        # 'p9', 'p10' or 'sisyphus'
+  "arches": "string | comma-separated list"  # 'all' or, by example, 'armh,i586'
+  "packages": [
+    {
+      "source": "string",       # source package's name
+      "binaries": [
+        {
+          "name": "string",     # binary package's name
+          "epoch": int,
+          "version": "string",
+          "release": "string",
+          "arch": "string",
+          "disttag": "string",
+          "buildtime": int
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -104,26 +116,35 @@ alt_query_branch.cache_path(v)      # where v is string; set cache path (file)
 
 Find all fuzzers in `p10` for `ppc64le` and `armh`(`jq` used for more pretty output):
 ```bash
-$ alt-query-branch -b p10 -s -a ppc64le,armh fuzz | jq .
+$ ./alt-query-branch.py -b p10 -s -a ppc64le,armh fuzz | jq .
 ```
 (there are many packages, so I don't show them :) ).
 
 Find all `.*lsp-server.*` packages in `sisyphus` for `noarch`:
 ```bash
-$ alt-query-branch -b sisyphus -s .*lsp-server.* -a noarch | jq .
+$ ./alt-query-branch.py -b sisyphus -s .*lsp-server.* -a noarch | jq .
 ```
 output:
 ```json
 {
-  "asked": ".*lsp-server.*",
-  "type": "inexact",
-  "found": [
+  "expression": ".*lsp-server.*",
+  "exactness": "inexact",
+  "branch": "sisyphus",
+  "arches": [
+    "noarch"
+  ],
+  "packages": [
     {
       "source": "python3-module-python-lsp-server",
       "binaries": [
         {
+          "name": "python3-module-python-lsp-server",
+          "epoch": 0,
+          "version": "1.7.0",
+          "release": "alt1",
           "arch": "noarch",
-          "name": "python3-module-python-lsp-server"
+          "disttag": "sisyphus+312866.100.1.1",
+          "buildtime": 1672864445
         }
       ]
     }
