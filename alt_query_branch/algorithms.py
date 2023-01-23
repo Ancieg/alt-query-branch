@@ -27,7 +27,7 @@ def search_matching_packages(match, exact=False, branch='sisyphus', arches='all'
     """
     Using jq is simple and fast way to process large JSON-content.
     """
-    packages = rdb.branch_binary_packages_list_with_source_package_only(branch)
+    packages = rdb.branch_binary_packages_with_source_package(branch)
 
     if arches == 'all':
         arches = ORDERED_ARCHES
