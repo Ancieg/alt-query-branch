@@ -6,14 +6,14 @@ ALLOWED_BRANCHES = [
     'p9'
 ]
 
-ORDERED_ARCHES = [
-    'noarch',
-    'x86_64',
-    'i586',
-    'armh',
-    'aarch64',
-    'ppc64le'
-]
+ORDERED_ARCHES = {
+    'noarch': 0,
+    'x86_64': 1,
+    'i586': 2,
+    'armh': 3,
+    'aarch64': 4,
+    'ppc64le': 5
+}
 
 CACHING = {
     'enabled': True,

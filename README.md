@@ -56,8 +56,9 @@ Example (like inside `alt-query-branch.py` script):
 ```python
 from alt_query_branch import (
     branch_binary_packages_with_source_package,
-    order_packages,
-    search_matching_packages,
+    group_packages_by_sources,
+    order_groupped_packages_by_arches,
+    search_matching_packages
 )
 
 # Fetch all of the branch binary packages.
@@ -66,8 +67,12 @@ branch_packages = branch_binary_packages_with_source_package('p10')
 # Find matching packages: search inexact 'fuzz' in arches 'noarch' and 'armh'.
 packages = search_matching_packages(branch_packages, 'fuzz', arches=['noarch', 'armh'])
 
-# Group by sources packages and sort (sources and arches).
-ordered_packages = order_packages(packages)
+# Group by sources packages.
+groupped_packages = group_packages_by_sources(packages)
+
+# Order already groupped by source packages by arches.
+# You can see order in alt_query_branch/constants.py in ORDERED_ARCHES dict.
+ordered_groupped_packages = order_groupped_packages_by_arches(groupped_packages)
 ```
 Also you can manage caching:
 ```python

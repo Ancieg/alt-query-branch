@@ -1,26 +1,54 @@
+from collections import defaultdict
 from typing import Any, Union
 
 from jq import jq
 
 from .constants import ORDERED_ARCHES
-from .datastructures import BinaryPackage, SourcePackage
 
 
-def order_packages(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def group_packages_by_sources(
+        packages: list[dict[str, Any]]
+        ) -> list[dict[str, Any]]:
     """
-    Groups 'packages' by sorted 'source' fields and orders 'arch'.
+    Groups 'packages' by 'source' field.
     """
     def without_keys(d, keys):
         return {x: d[x] for x in d if x not in keys}
 
-    sources = {p['source']: SourcePackage(p['source']) for p in packages}
+    groupped = defaultdict(list)
 
     for package in packages:
-        sources[package['source']].add_bin(
-            BinaryPackage(**without_keys(package, 'source'))
-        )
+        groupped[package['source']].append(without_keys(package, 'source'))
 
-    return [v.to_dict() for k, v in sorted(sources.items())]
+    return [{'source': k, 'packages': v} for k, v in groupped.items()]
+
+
+def sort_groupped_packages_by_sources(
+        packages: list[dict[str, Any]]
+        ) -> list[dict[str, Any]]:
+    """
+    Sorts 'packages' by 'source' field.
+    Requires packages already groupped by group_packages_by_sources().
+    """
+    return sorted(packages, key=lambda p: p['source'])
+
+
+def order_groupped_packages_by_arches(
+        packages: list[dict[str, Any]]
+        ) -> list[dict[str, Any]]:
+    """
+    Orders 'packages' by 'arch' field according to the order in ORDERED_ARCHES.
+    Requires packages already groupped by group_packages_by_sources().
+    """
+    return [
+        {
+            'source': package['source'],
+            'packages': sorted(
+                package['packages'], key=lambda p: ORDERED_ARCHES[p['arch']]
+            )
+        }
+        for package in packages
+    ]
 
 
 def search_matching_packages(

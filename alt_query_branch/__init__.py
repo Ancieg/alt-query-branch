@@ -1,4 +1,9 @@
-from .algorithms import search_matching_packages, order_packages  # noqa: F401
+from .algorithms import (  # noqa: F401
+    group_packages_by_sources,
+    sort_groupped_packages_by_sources,
+    order_groupped_packages_by_arches,
+    search_matching_packages
+)
 from .constants import CACHING  # noqa: F401
 from .rdb import branch_binary_packages_with_source_package  # noqa: F401
 

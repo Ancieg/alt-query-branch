@@ -6,8 +6,9 @@ import sys
 
 from alt_query_branch import (
     branch_binary_packages_with_source_package,
-    order_packages,
-    search_matching_packages,
+    group_packages_by_sources,
+    order_groupped_packages_by_arches,
+    search_matching_packages
 )
 
 
@@ -46,7 +47,11 @@ try:
             "exactness": "exact" if exact else "inexact",
             "branch": branch,
             "arches": arches,
-            "packages": order_packages(matching_packages)
+            # sort_groupped_packages_by_sources() is not used due to the fact
+            # that rdb provides already sorted packages by sources.
+            "packages": order_groupped_packages_by_arches(
+                group_packages_by_sources(matching_packages)
+            )
         }
     )
 except Exception as e:
