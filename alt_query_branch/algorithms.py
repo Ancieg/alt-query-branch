@@ -13,8 +13,7 @@ def order_packages(packages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     def without_keys(d, keys):
         return {x: d[x] for x in d if x not in keys}
 
-    sources_names = list({s['source'] for s in packages})
-    sources = {sn: SourcePackage(sn) for sn in sources_names}
+    sources = {p['source']: SourcePackage(p['source']) for p in packages}
 
     for package in packages:
         sources[package['source']].add_bin(
