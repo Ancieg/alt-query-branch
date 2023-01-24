@@ -5,7 +5,10 @@ from .algorithms import (  # noqa: F401
     search_matching_packages
 )
 from .constants import CACHING  # noqa: F401
-from .rdb import branch_binary_packages_with_source_package  # noqa: F401
+from .rdb import (  # noqa: F401
+    branch_binary_packages,
+    branch_binary_packages_with_source_package,
+)
 
 
 def enable_caching(path: str = '~/.cache/alt-query-branch',
