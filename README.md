@@ -54,8 +54,11 @@ options:
 # Usage as a module
 Example (like inside `alt-query-branch.py` script):
 ```python
-from alt_query_branch.algorithms import search_matching_packages, order_packages
-from alt_query_branch.rdb import branch_binary_packages_with_source_package
+from alt_query_branch import (
+    branch_binary_packages_with_source_package,
+    order_packages,
+    search_matching_packages,
+)
 
 # Fetch all of the branch binary packages.
 branch_packages = branch_binary_packages_with_source_package('p10')

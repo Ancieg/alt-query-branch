@@ -4,8 +4,11 @@ import argparse
 import json
 import sys
 
-from alt_query_branch.algorithms import search_matching_packages, order_packages
-from alt_query_branch.rdb import branch_binary_packages_with_source_package
+from alt_query_branch import (
+    branch_binary_packages_with_source_package,
+    order_packages,
+    search_matching_packages,
+)
 
 
 def perror(*args, **kwargs):
