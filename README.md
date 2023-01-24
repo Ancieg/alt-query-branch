@@ -70,7 +70,7 @@ Also you can manage caching:
 ```python
 # Enable caching with arguments.
 alt_query_branch.enable_caching(
-    path='~/.cache/alt-query-branch', backend='sqlite', lifetime=300)
+    path='~/.cache/alt-query-branch', backend='sqlite', lifetime=300
 )
 
 # Disable caching.
