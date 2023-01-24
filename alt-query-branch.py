@@ -54,13 +54,16 @@ try:
             )
         }
     )
-except Exception as e:
+except ValueError as e:
     perror(e)
     sys.exit(2)
 
 if stdout:
     print(result)
 
-if file:
-    with open(file, "w") as f:
-        print(result, file=f)
+try:
+    if file:
+        with open(file, "w") as f:
+            print(result, file=f)
+except Exception as e:
+    perror(e)
