@@ -22,7 +22,10 @@ def _restapi_request(request: str):
 
 def _branch_binary_packages_response(branch: str):
     if branch not in ALLOWED_BRANCHES:
-        raise ValueError(f"Branch {branch} is not available")
+        raise ValueError(
+            f"Branch {branch} is not available.\n"
+            f"Available branches: {', '.join(ALLOWED_BRANCHES)}."
+        )
     return _restapi_request(f"{REQUEST_ROUTE}/{branch}")
 
 
